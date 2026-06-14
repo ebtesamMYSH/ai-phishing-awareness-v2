@@ -50,11 +50,11 @@ for k, v in [("language","English"),("page","home"),("role",""),
         st.session_state[k] = v
 
 # == Query params navigation handler ============================
-_nav = st.experimental_get_query_params().get("nav", [""])[0]
+_nav = st.query_params.get("nav", "")
 if _nav in ("login", "register"):
     st.session_state["login_mode"] = _nav
     st.session_state["page"] = "login"
-    st.experimental_set_query_params()   # clear URL — no rerun needed
+    st.query_params.clear()   # clear URL — no rerun needed
 
 # == Global helper functions ===================================
 
