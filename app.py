@@ -1028,16 +1028,23 @@ div[data-baseweb="select"] span{{color:white !important;}}
         en_cls = "lang-btn-sel" if cur_lang == "English" else "lang-btn"
         ar_cls = "lang-btn-sel" if cur_lang == "Arabic"  else "lang-btn"
         st.markdown(f"""<style>
-.lang-btn > div[data-testid="stButton"] > button {{
+.lang-btn button {{
     background: rgba(15,23,42,.78) !important;
     border: 1px solid rgba(37,99,235,.55) !important;
     color: #EAF4FF !important;
 }}
-.lang-btn-sel > div[data-testid="stButton"] > button {{
+.lang-btn-sel button {{
     background: linear-gradient(90deg,#0B4FA8,#0284C7) !important;
     border: 2px solid #1EA7FF !important;
     color: white !important;
     box-shadow: 0 0 14px rgba(30,167,255,.35) !important;
+}}
+.lang-btn-sel button:hover,
+.lang-btn-sel button:focus,
+.lang-btn-sel button:active {{
+    background: linear-gradient(90deg,#0B4FA8,#0284C7) !important;
+    border: 2px solid #1EA7FF !important;
+    color: white !important;
 }}
 </style>""", unsafe_allow_html=True)
         col1,col2 = st.columns(2)
