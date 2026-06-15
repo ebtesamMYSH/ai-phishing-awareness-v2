@@ -50,6 +50,19 @@ button[data-testid="baseButton-primary"],
 }
 </style>""", unsafe_allow_html=True)
 
+# == Global CSS fix for button width on newer Streamlit ==
+import streamlit as _st_css
+def _inject_global_css():
+    _st_css.markdown("""<style>
+/* Target every possible Streamlit button wrapper in newer versions */
+div[data-testid="stButton"] { width: 100% !important; }
+div[data-testid="stButton"] > button { width: 100% !important; min-height: 52px !important; }
+div[data-testid="column"] div[data-testid="stButton"] > button { width: 100% !important; }
+.stButton { width: 100% !important; }
+.stButton > button { width: 100% !important; min-height: 52px !important; }
+</style>""", unsafe_allow_html=True)
+_inject_global_css()
+
 # == Session state initialisation ==============================
 # Streamlit reruns the full script on every user interaction.
 # st.session_state acts as persistent storage between reruns.
