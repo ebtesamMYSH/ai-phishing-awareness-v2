@@ -54,6 +54,10 @@ _nav = st.query_params.get("nav", "")
 if _nav in ("login", "register"):
     st.session_state["login_mode"] = _nav
     st.session_state["page"] = "login"
+    # Preserve language from URL if passed
+    _lang = st.query_params.get("lang", "")
+    if _lang in ("Arabic", "English"):
+        st.session_state["language"] = _lang
     st.query_params.clear()   # clear URL — no rerun needed
 
 # == Global helper functions ===================================
@@ -965,8 +969,8 @@ div[data-baseweb="select"] span{{color:white !important;}}
     <span style="font-size:15px;font-weight:800;color:#F8FAFC;white-space:nowrap;">{nav_brand}</span>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <a href="?nav=login"  class="nb-btn nb-btn-ghost">{nav_login}</a>
-    <a href="?nav=register" class="nb-btn nb-btn-solid">{nav_register}</a>
+    <a href="?nav=login&lang={st.session_state.get('language','English')}"  class="nb-btn nb-btn-ghost">{nav_login}</a>
+    <a href="?nav=register&lang={st.session_state.get('language','English')}" class="nb-btn nb-btn-solid">{nav_register}</a>
   </div>
 </div>""", unsafe_allow_html=True)
 
