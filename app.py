@@ -1088,12 +1088,13 @@ div[data-baseweb="select"] span{{color:white !important;}}
         else:
             ordered = [("easy","🟢  Beginner"),("medium","🟡  Intermediate"),("hard","🔴  Advanced")]
 
-        # For Arabic: reverse column order so مبتدئ appears on the right
+        # For Arabic: مبتدئ on right, متوسط center, متقدم left
+        # Streamlit cols go left→right: col[0]=left, col[2]=right
+        # So for RTL: display order = [hard, medium, easy] in cols [0,1,2]
+        diff_cols = st.columns(3)
         if is_arabic_now:
-            diff_cols = list(reversed(st.columns(3)))
-            ordered_display = list(reversed(ordered))
+            ordered_display = list(reversed(ordered))  # متقدم, متوسط, مبتدئ
         else:
-            diff_cols = st.columns(3)
             ordered_display = ordered
 
         for i,(dk,lbl) in enumerate(ordered_display):
