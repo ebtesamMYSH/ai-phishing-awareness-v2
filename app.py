@@ -1679,7 +1679,7 @@ def page_login():
     border:1px solid rgba(37,99,235,.55) !important;border-radius:12px !important;
     min-height:48px;direction:{da};font-size:.95rem !important;
 }}
-.stTextInput label{{color:#94A3B8 !important;font-size:.85rem !important;}}
+.stTextInput label{{color:#94A3B8 !important;font-size:.85rem !important;direction:{da};text-align:{text_align};display:block;}}
 .stButton>button {{
     width:100% !important;
     min-height:48px !important;
@@ -1745,7 +1745,7 @@ div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] button {
 
     c1, c2 = st.columns([1,1])
     with c1:
-        if st.button(tl("← Back","→ رجوع"), key="login_back", use_container_width=True):
+        if st.button(tl("← Back","رجوع →"), key="login_back", use_container_width=True):
             st.session_state["page"] = "home"
             st.rerun()
     with c2:
