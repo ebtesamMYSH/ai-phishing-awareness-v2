@@ -1084,15 +1084,19 @@ div[data-baseweb="select"] span{{color:white !important;}}
         is_arabic_now = st.session_state["language"] == "Arabic"
 
         if is_arabic_now:
-            # Streamlit renders columns left→right always.
-            # Page is RTL so col[0]=right, col[1]=center, col[2]=left
-            # We want: right=مبتدئ, center=متوسط, left=متقدم
             ordered = [("easy","🟢  مبتدئ"),("medium","🟡  متوسط"),("hard","🔴  متقدم")]
         else:
             ordered = [("easy","🟢  Beginner"),("medium","🟡  Intermediate"),("hard","🔴  Advanced")]
 
-        diff_cols = st.columns(3)
-        for i,(dk,lbl) in enumerate(ordered):
+        # For Arabic: reverse column order so مبتدئ appears on the right
+        if is_arabic_now:
+            diff_cols = list(reversed(st.columns(3)))
+            ordered_display = list(reversed(ordered))
+        else:
+            diff_cols = st.columns(3)
+            ordered_display = ordered
+
+        for i,(dk,lbl) in enumerate(ordered_display):
             with diff_cols[i]:
                 is_sel  = current_diff == dk
                 css_cls = "diff-btn diff-btn-sel" if is_sel else "diff-btn"
