@@ -925,7 +925,7 @@ div[data-baseweb="popover"] ul li{{text-align:{text_align} !important;direction:
      border-radius:14px;padding:8px 20px;margin-bottom:1.2rem;
      display:flex;align-items:center;justify-content:space-between;
      flex-direction:{flex_dir};min-height:52px;">
-  <div style="display:flex;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:8px;flex-direction:{"row-reverse" if is_arabic else "row"};">
     {shield_small}
     <span style="font-size:15px;font-weight:800;color:#F8FAFC;white-space:nowrap;">{nav_brand}</span>
   </div>
@@ -965,7 +965,7 @@ div[data-baseweb="popover"] ul li{{text-align:{text_align} !important;direction:
      border-radius:14px;padding:8px 20px;margin-bottom:1.2rem;
      display:flex;align-items:center;justify-content:space-between;
      flex-direction:{flex_dir};min-height:52px;">
-  <div style="display:flex;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:8px;flex-direction:{"row-reverse" if is_arabic else "row"};">
     {shield_small}
     <span style="font-size:15px;font-weight:800;color:#F8FAFC;white-space:nowrap;">{nav_brand}</span>
   </div>
@@ -1190,9 +1190,10 @@ div[data-baseweb="popover"] ul li{{text-align:{text_align} !important;direction:
 # Progress bar shows current position (1 of 6 ... 6 of 6).
 # =============================================================
 def page_learning():
-    is_arabic = st.session_state["language"]=="Arabic"
-    dir_attr  = 'rtl' if is_arabic else 'ltr'
-    TOTAL     = 6
+    is_arabic  = st.session_state["language"]=="Arabic"
+    dir_attr   = 'rtl' if is_arabic else 'ltr'
+    text_align = 'right' if is_arabic else 'left'
+    TOTAL      = 6
     idx       = st.session_state["example_index"]
 
     if st.session_state.get("cache_version",0) < 12:
