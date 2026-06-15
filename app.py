@@ -34,23 +34,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-
-# == Global CSS fixes for Streamlit Cloud ==
-st.markdown("""<style>
-/* FIX 1: Force all buttons to full width */
-div[data-testid="stButton"] { width: 100% !important; }
-div[data-testid="stButton"] > button {
-    width: 100% !important;
-    min-height: 52px !important;
-    font-size: 1rem !important;
-    font-weight: 800 !important;
-    border-radius: 12px !important;
-    padding: .6rem 1rem !important;
-}
-/* FIX 2: Remove ! from success/error icons */
-div[data-testid="stAlert"] { display: none !important; }
-</style>""", unsafe_allow_html=True)
-
 # == Session state initialisation ==============================
 # Streamlit reruns the full script on every user interaction.
 # st.session_state acts as persistent storage between reruns.
@@ -60,6 +43,24 @@ div[data-testid="stAlert"] { display: none !important; }
 #   role          : user-selected job role (e.g. "Clinical")
 #   example_index : which learning example is currently shown (0-5)
 #   emails        : cache of AI-generated emails {index: email_dict}
+
+# ── Global CSS: force button widths for newer Streamlit ──────
+st.markdown("""<style>
+/* Force all st.button to full width */
+div[data-testid="stButton"] { width: 100% !important; }
+div[data-testid="stButton"] > button {
+    width: 100% !important;
+    min-height: 52px !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+    padding: .55rem 1rem !important;
+    white-space: nowrap !important;
+}
+/* Hide Streamlit default top padding */
+.block-container { padding-top: 1.5rem !important; }
+</style>""", unsafe_allow_html=True)
+
 for k, v in [("language","English"),("page","home"),("role",""),
               ("example_index",0),("emails",{}),("difficulty","medium"),
               ("user_name",""),("user_email","")]:
@@ -1523,7 +1524,7 @@ def page_assessment():
         else:
             ua=st.session_state["assess_answers"][idx]; ca2="phishing" if pattern[idx] else "legitimate"; ok=ua==ca2
             c="#6EE7B7" if ok else "#FCA5A5"; bg="rgba(16,185,129,.15)" if ok else "rgba(239,68,68,.15)"; br="rgba(16,185,129,.5)" if ok else "rgba(239,68,68,.5)"
-            ic="✅" if ok else "❌"; lb=ta("Correct!","إجابة صحيحة!") if ok else ta("Incorrect!","إجابة خاطئة!")
+            ic="✅" if ok else "❌"; lb=ta("Correct ✓","إجابة صحيحة ✓") if ok else ta("Incorrect ✗","إجابة خاطئة ✗")
             st.markdown(f'<div style="background:{bg};border:2px solid {br};border-radius:12px;padding:1rem;text-align:center;color:{c};font-weight:800;font-size:1.1rem;margin-bottom:1rem;">{ic} {lb}</div>',unsafe_allow_html=True)
             if idx<TOTAL-1:
                 if st.button(ta("Next Question →","← السؤال التالي"),key=f"na_{idx}"):
@@ -1615,9 +1616,9 @@ def page_report():
                 f'<div style="color:#7DD3FC;font-size:.95rem;">{tp(f"Role: {role}","الدور: "+role)}</div></div>',
                 unsafe_allow_html=True)
     c1,c2,c3=st.columns(3)
-    with c1: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Overall Score","النتيجة الإجمالية")}</div><div style="font-size:2.5rem;font-weight:900;color:{sc2};">{score}/{TOTAL}</div><div style="color:{sc2};font-size:.9rem;">{pct}%</div></div>',unsafe_allow_html=True)
-    with c2: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Awareness Level","مستوى الوعي")}</div><div style="font-size:2.5rem;">{aw}</div><div style="color:{sc2};font-weight:700;font-size:.95rem;">{awl}</div></div>',unsafe_allow_html=True)
-    with c3: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Detection Rate","معدل الاكتشاف الصحيح")}</div><div style="font-size:.8rem;color:#64748B;margin-bottom:.6rem;">{tp("How accurately you identified each type","دقة تمييزك لكل نوع")}</div><div style="font-size:1.1rem;font-weight:700;color:#FCA5A5;">🚨 {tp("Phishing detected","التصيد المكتشف")}: {pp}%</div><div style="font-size:1.1rem;font-weight:700;color:#6EE7B7;margin-top:.4rem;">✅ {tp("Legitimate identified","الشرعية المميزة")}: {lp}%</div></div>',unsafe_allow_html=True)
+    with c1: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:185px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Overall Score","النتيجة الإجمالية")}</div><div style="font-size:2.5rem;font-weight:900;color:{sc2};">{score}/{TOTAL}</div><div style="color:{sc2};font-size:.9rem;">{pct}%</div></div>',unsafe_allow_html=True)
+    with c2: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:185px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Awareness Level","مستوى الوعي")}</div><div style="font-size:2.5rem;">{aw}</div><div style="color:{sc2};font-weight:700;font-size:.95rem;">{awl}</div></div>',unsafe_allow_html=True)
+    with c3: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:185px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Detection Rate","معدل الاكتشاف الصحيح")}</div><div style="font-size:.8rem;color:#64748B;margin-bottom:.6rem;">{tp("How accurately you identified each type","دقة تمييزك لكل نوع")}</div><div style="font-size:1.1rem;font-weight:700;color:#FCA5A5;">🚨 {tp("Phishing detected","التصيد المكتشف")}: {pp}%</div><div style="font-size:1.1rem;font-weight:700;color:#6EE7B7;margin-top:.4rem;">✅ {tp("Legitimate identified","الشرعية المميزة")}: {lp}%</div></div>',unsafe_allow_html=True)
     st.markdown('<div style="height:1rem"></div>',unsafe_allow_html=True)
     s1,s2=st.columns(2)
     with s1:
