@@ -34,6 +34,22 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+
+# == Global button CSS fix for newer Streamlit versions ==
+st.markdown("""<style>
+/* Fix button sizing for Streamlit >= 1.28 */
+button[data-testid="baseButton-secondary"],
+button[data-testid="baseButton-primary"],
+.stButton button {
+    width: 100% !important;
+    min-height: 52px !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    padding: .6rem 1rem !important;
+}
+</style>""", unsafe_allow_html=True)
+
 # == Session state initialisation ==============================
 # Streamlit reruns the full script on every user interaction.
 # st.session_state acts as persistent storage between reruns.
