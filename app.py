@@ -1023,10 +1023,32 @@ div[data-baseweb="select"] span{{color:white !important;}}
         req_badge = f'<span style="color:#EF4444;font-size:.75rem;margin-right:4px;">*</span>'
 
         st.markdown(step_label("1", t("Select your preferred language","اختر اللغة المفضلة")), unsafe_allow_html=True)
-        col1,col2 = st.columns(2)
         cur_lang  = st.session_state.get("language","")
-        with col1: st.button("English", key="english", on_click=set_language, args=("English",), use_container_width=True)
-        with col2: st.button("العربية", key="arabic",  on_click=set_language, args=("Arabic",), use_container_width=True)
+        # Inject CSS to highlight selected language button
+        en_cls = "lang-btn-sel" if cur_lang == "English" else "lang-btn"
+        ar_cls = "lang-btn-sel" if cur_lang == "Arabic"  else "lang-btn"
+        st.markdown(f"""<style>
+.lang-btn > div[data-testid="stButton"] > button {{
+    background: rgba(15,23,42,.78) !important;
+    border: 1px solid rgba(37,99,235,.55) !important;
+    color: #EAF4FF !important;
+}}
+.lang-btn-sel > div[data-testid="stButton"] > button {{
+    background: linear-gradient(90deg,#0B4FA8,#0284C7) !important;
+    border: 2px solid #1EA7FF !important;
+    color: white !important;
+    box-shadow: 0 0 14px rgba(30,167,255,.35) !important;
+}}
+</style>""", unsafe_allow_html=True)
+        col1,col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div class="{en_cls}">', unsafe_allow_html=True)
+            st.button("English", key="english", on_click=set_language, args=("English",), use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown(f'<div class="{ar_cls}">', unsafe_allow_html=True)
+            st.button("العربية", key="arabic",  on_click=set_language, args=("Arabic",), use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown(step_label("2", t("Select your role","اختر دورك الوظيفي")), unsafe_allow_html=True)
         opts = [t("Choose your role","اختر دورك الوظيفي"),t("Clinical","سريري"),t("Admin / Management","إداري / إدارة"),t("IT / Informatics","تقنية المعلومات / المعلوماتية"),t("Other","أخرى")]
