@@ -43,24 +43,6 @@ st.set_page_config(
 #   role          : user-selected job role (e.g. "Clinical")
 #   example_index : which learning example is currently shown (0-5)
 #   emails        : cache of AI-generated emails {index: email_dict}
-
-# ── Global CSS: force button widths for newer Streamlit ──────
-st.markdown("""<style>
-/* Force all st.button to full width */
-div[data-testid="stButton"] { width: 100% !important; }
-div[data-testid="stButton"] > button {
-    width: 100% !important;
-    min-height: 52px !important;
-    font-size: 1rem !important;
-    font-weight: 800 !important;
-    border-radius: 12px !important;
-    padding: .55rem 1rem !important;
-    white-space: nowrap !important;
-}
-/* Hide Streamlit default top padding */
-.block-container { padding-top: 1.5rem !important; }
-</style>""", unsafe_allow_html=True)
-
 for k, v in [("language","English"),("page","home"),("role",""),
               ("example_index",0),("emails",{}),("difficulty","medium"),
               ("user_name",""),("user_email","")]:
@@ -1043,8 +1025,8 @@ div[data-baseweb="select"] span{{color:white !important;}}
         st.markdown(step_label("1", t("Select your preferred language","اختر اللغة المفضلة")), unsafe_allow_html=True)
         col1,col2 = st.columns(2)
         cur_lang  = st.session_state.get("language","")
-        with col1: st.button("English", key="english", on_click=set_language, args=("English",))
-        with col2: st.button("العربية", key="arabic",  on_click=set_language, args=("Arabic",))
+        with col1: st.button("English", key="english", on_click=set_language, args=("English",), use_container_width=True)
+        with col2: st.button("العربية", key="arabic",  on_click=set_language, args=("Arabic",), use_container_width=True)
 
         st.markdown(step_label("2", t("Select your role","اختر دورك الوظيفي")), unsafe_allow_html=True)
         opts = [t("Choose your role","اختر دورك الوظيفي"),t("Clinical","سريري"),t("Admin / Management","إداري / إدارة"),t("IT / Informatics","تقنية المعلومات / المعلوماتية"),t("Other","أخرى")]
@@ -1122,7 +1104,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
                 st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="start-btn" style="margin-top:.8rem;">',unsafe_allow_html=True)
-        if st.button(t("Start Personalised Training","ابدأ التدريب المخصص"),key="start_training"):
+        if st.button(t("Start Personalised Training","ابدأ التدريب المخصص"),key="start_training", use_container_width=True):
             fr = other_role.strip() if sel==opts[-1] else sel
             lang_chosen = st.session_state.get("lang_explicitly_chosen", False)
             diff_chosen = st.session_state.get("diff_explicitly_chosen", False)
@@ -1516,21 +1498,21 @@ def page_assessment():
         if not answered:
             c1,c2=st.columns(2)
             with c1:
-                if st.button(f"🚨 {ta('Phishing','تصيد إلكتروني')}",key=f"ph_{idx}"):
+                if st.button(f"🚨 {ta('Phishing','تصيد إلكتروني')}",key=f"ph_{idx}", use_container_width=True):
                     st.session_state["assess_answers"][idx]="phishing"; st.rerun()
             with c2:
-                if st.button(f"✅ {ta('Legitimate','شرعية')}",key=f"lg_{idx}"):
+                if st.button(f"✅ {ta('Legitimate','شرعية')}",key=f"lg_{idx}", use_container_width=True):
                     st.session_state["assess_answers"][idx]="legitimate"; st.rerun()
         else:
             ua=st.session_state["assess_answers"][idx]; ca2="phishing" if pattern[idx] else "legitimate"; ok=ua==ca2
             c="#6EE7B7" if ok else "#FCA5A5"; bg="rgba(16,185,129,.15)" if ok else "rgba(239,68,68,.15)"; br="rgba(16,185,129,.5)" if ok else "rgba(239,68,68,.5)"
-            ic="✅" if ok else "❌"; lb=ta("Correct ✓","إجابة صحيحة ✓") if ok else ta("Incorrect ✗","إجابة خاطئة ✗")
+            ic="✅" if ok else "❌"; lb=ta("Correct!","إجابة صحيحة!") if ok else ta("Incorrect!","إجابة خاطئة!")
             st.markdown(f'<div style="background:{bg};border:2px solid {br};border-radius:12px;padding:1rem;text-align:center;color:{c};font-weight:800;font-size:1.1rem;margin-bottom:1rem;">{ic} {lb}</div>',unsafe_allow_html=True)
             if idx<TOTAL-1:
-                if st.button(ta("Next Question →","← السؤال التالي"),key=f"na_{idx}"):
+                if st.button(ta("Next Question →","← السؤال التالي"),key=f"na_{idx}", use_container_width=True):
                     st.session_state["assess_index"]+=1; st.rerun()
             else:
-                if st.button(ta("View Results →","← عرض النتائج"),key="vr"):
+                if st.button(ta("View Results →","← عرض النتائج"),key="vr", use_container_width=True):
                     st.session_state["page"]="results"; st.rerun()
 
 
@@ -1628,10 +1610,10 @@ def page_report():
         ai="".join([f'<div style="color:#FCA5A5;margin-bottom:.4rem;">⚠️ {a}</div>' for a in areas]) or f'<div style="color:#94A3B8;">{tp("Great work!","عمل رائع!")}</div>'
         st.markdown(f'<div style="border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:1.2rem;background:rgba(239,68,68,.05);direction:{da};"><div style="font-weight:800;color:#F1F5F9;margin-bottom:.8rem;">📈 {tp("Areas to Improve","مجالات التحسين")}</div>{ai}</div>',unsafe_allow_html=True)
     st.markdown('<div style="height:1rem"></div>',unsafe_allow_html=True)
-    ri="".join([f'<div style="color:#DCEBFF;margin-bottom:.5rem;text-align:{"right" if is_arabic else "left"};direction:{da};">📌 {r}</div>' for r in recs])
+    ri="".join([f'<div style="color:#DCEBFF;margin-bottom:.5rem;">📌 {r}</div>' for r in recs])
     st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:14px;padding:1.2rem 1.5rem;background:rgba(2,6,23,.6);margin-bottom:1.5rem;direction:{da};"><div style="font-weight:800;color:#F1F5F9;margin-bottom:.8rem;">💡 {tp("Recommendations","التوصيات")}</div>{ri}</div>',unsafe_allow_html=True)
     st.markdown(f'<div style="text-align:center;padding:.8rem;border:1px solid rgba(37,99,235,.3);border-radius:10px;background:rgba(37,99,235,.08);color:#7DD3FC;margin-bottom:1.5rem;">⭐ {tp("Your awareness helps keep your organization safe","وعيك يساهم في حماية مؤسستك")}</div>',unsafe_allow_html=True)
-    if st.button(tp("Retake Training","إعادة التدريب من البداية"),key="retake"):
+    if st.button(tp("Retake Training","إعادة التدريب من البداية"),key="retake", use_container_width=True):
         for k in ["page","example_index","emails","assess_index","assess_emails","assess_answers","assess_pattern","cache_version","role","scenario_order","assess_scenario_order","difficulty","user_name","user_email","lang_explicitly_chosen","diff_explicitly_chosen"]:
             st.session_state.pop(k,None)
         st.rerun()
