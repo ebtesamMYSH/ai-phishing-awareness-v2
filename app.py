@@ -1063,7 +1063,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
 
         st.markdown(step_label("2", t("Select your role","اختر دورك الوظيفي")), unsafe_allow_html=True)
         opts = [t("Choose your role","اختر دورك الوظيفي"),t("Clinical","سريري"),t("Admin / Management","إداري / إدارة"),t("IT / Informatics","تقنية المعلومات / المعلوماتية"),t("Other","أخرى")]
-        if is_arabic_now:
+        if st.session_state.get("language","English") == "Arabic":
             st.markdown("""<style>
 div[data-baseweb="select"] { direction: rtl !important; }
 div[data-baseweb="select"] * { text-align: right !important; direction: rtl !important; }
@@ -1122,7 +1122,7 @@ ul[role="listbox"] li { text-align: right !important; direction: rtl !important;
         current_diff  = st.session_state.get("difficulty","medium")
         is_arabic_now = st.session_state["language"] == "Arabic"
 
-        if is_arabic_now:
+        if st.session_state.get("language","English") == "Arabic":
             ordered = [("easy","🟢  مبتدئ"),("medium","🟡  متوسط"),("hard","🔴  متقدم")]
         else:
             ordered = [("easy","🟢  Beginner"),("medium","🟡  Intermediate"),("hard","🔴  Advanced")]
@@ -1131,7 +1131,7 @@ ul[role="listbox"] li { text-align: right !important; direction: rtl !important;
         # Streamlit cols go left→right: col[0]=left, col[2]=right
         # So for RTL: display order = [hard, medium, easy] in cols [0,1,2]
         diff_cols = st.columns(3)
-        if is_arabic_now:
+        if st.session_state.get("language","English") == "Arabic":
             ordered_display = list(reversed(ordered))  # متقدم, متوسط, مبتدئ
         else:
             ordered_display = ordered
