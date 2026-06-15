@@ -890,6 +890,7 @@ def page_home():
 .start-btn>button:hover{{background:linear-gradient(90deg,#0B4FA8,#0284C7) !important;border-color:#1EA7FF !important;}}
 .stSelectbox>div>div,.stTextInput>div>div>input{{background-color:rgba(15,23,42,.88) !important;color:white !important;border:1px solid rgba(37,99,235,.55) !important;border-radius:12px !important;min-height:48px;direction:{dir_attr};text-align:{text_align};}}
 div[data-baseweb="select"] span{{color:white !important;}}
+div[data-baseweb="popover"] ul li{{text-align:{text_align} !important;direction:{dir_attr} !important;}}
 .footer-bar{{margin-top:2rem;padding:1.5rem 0;border-top:1px solid rgba(37,99,235,.35);display:flex;justify-content:space-between;align-items:center;color:#7DD3FC;font-size:.95rem;direction:{dir_attr};}}
 .footer-side{{display:flex;align-items:center;gap:.8rem;}}
 .diff-btn>button{{width:100% !important;min-height:52px !important;border-radius:14px !important;font-weight:800 !important;font-size:.95rem !important;transition:.2s ease !important;background:rgba(2,6,23,.55) !important;border:2px solid rgba(37,99,235,.35) !important;color:#94A3B8 !important;}}
@@ -1063,12 +1064,6 @@ div[data-baseweb="select"] span{{color:white !important;}}
 
         st.markdown(step_label("2", t("Select your role","اختر دورك الوظيفي")), unsafe_allow_html=True)
         opts = [t("Choose your role","اختر دورك الوظيفي"),t("Clinical","سريري"),t("Admin / Management","إداري / إدارة"),t("IT / Informatics","تقنية المعلومات / المعلوماتية"),t("Other","أخرى")]
-        if st.session_state.get("language","English") == "Arabic":
-            st.markdown("""<style>
-div[data-baseweb="select"] { direction: rtl !important; }
-div[data-baseweb="select"] * { text-align: right !important; direction: rtl !important; }
-ul[role="listbox"] li { text-align: right !important; direction: rtl !important; }
-</style>""", unsafe_allow_html=True)
         sel  = st.selectbox("role",opts,index=0,label_visibility="collapsed")
         other_role = ""
         if sel==opts[-1]: other_role=st.text_input(t("Please specify your role","يرجى كتابة دورك الوظيفي"),placeholder=t("Type your role here","اكتب دورك الوظيفي هنا"))
