@@ -880,7 +880,7 @@ def page_home():
 .form-title{{font-size:1.35rem;font-weight:900;color:white;margin-bottom:1rem;}}
 .section-label{{font-weight:800;color:white;margin-bottom:.5rem;direction:{dir_attr};text-align:{text_align};}}
 [data-testid="column"]{{direction:{dir_attr};}}
-.stButton>button{{width:100%;min-height:48px;background:rgba(15,23,42,.78);color:#EAF4FF;border:1px solid rgba(37,99,235,.55);border-radius:12px;font-weight:800;direction:{dir_attr};}}
+.stButton>button{{width:100% !important;min-height:52px !important;background:rgba(15,23,42,.78) !important;color:#EAF4FF !important;border:1px solid rgba(37,99,235,.55) !important;border-radius:12px !important;font-weight:800 !important;direction:{dir_attr} !important;padding:.6rem 1rem !important;font-size:1rem !important;}}
 .stButton>button:hover,.stButton>button:focus{{background:linear-gradient(90deg,#0B4FA8,#0284C7);color:white;border-color:#1EA7FF !important;}}
 .start-btn>button{{min-height:56px !important;background:rgba(15,23,42,.88) !important;color:white !important;border:1px solid rgba(37,99,235,.65) !important;font-size:1.05rem !important;font-weight:900 !important;border-radius:14px !important;}}
 .start-btn>button:hover{{background:linear-gradient(90deg,#0B4FA8,#0284C7) !important;border-color:#1EA7FF !important;}}
