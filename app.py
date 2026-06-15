@@ -1100,7 +1100,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
                 if st.button(lbl, key=f"diff_{dk}"):
                     st.session_state["difficulty"] = dk
                     st.session_state["diff_explicitly_chosen"] = True
-                    st.experimental_rerun()
+                    st.rerun()
                 st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="start-btn" style="margin-top:.8rem;">',unsafe_allow_html=True)
@@ -1124,7 +1124,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
                              "⚠️ يرجى اختيار مستوى الصعوبة"))
             else:
                 if "scenario_order" in st.session_state: del st.session_state["scenario_order"]
-                go_to_learning(fr); st.experimental_rerun()
+                go_to_learning(fr); st.rerun()
         st.markdown('</div>',unsafe_allow_html=True)
 
     ft = t("Together, let's build a stronger, phishing-resistant healthcare environment.","معًا نبني بيئة صحية أكثر مقاومة للتصيد الإلكتروني")
@@ -1173,7 +1173,7 @@ def page_learning():
     if idx not in st.session_state["emails"]:
         with st.spinner(t("🤖 Generating phishing example...","🤖 جارٍ توليد مثال التصيد...")):
             st.session_state["emails"][idx] = generate_email(st.session_state["role"],idx,st.session_state["language"])
-            st.experimental_rerun()
+            st.rerun()
 
     email = st.session_state["emails"].get(idx,{})
     pct   = int((idx/TOTAL)*100)
@@ -1194,7 +1194,7 @@ def page_learning():
     if "error" in email:
         st.error(f"**Error:** {email['error']}")
         if st.button(t("🔄 Try Again","🔄 حاول مرة أخرى"),key="retry_btn"):
-            del st.session_state["emails"][idx]; st.experimental_rerun()
+            del st.session_state["emails"][idx]; st.rerun()
         return
 
     if is_arabic:
@@ -1238,10 +1238,10 @@ def page_learning():
     with bc:
         if idx<TOTAL-1:
             if st.button(t("Next Example →","← المثال التالي"),key="next_btn"):
-                st.session_state["example_index"]+=1; st.experimental_rerun()
+                st.session_state["example_index"]+=1; st.rerun()
         else:
             if st.button(t("Complete Learning Phase →","← إتمام مرحلة التعلم"),key="complete_btn"):
-                st.session_state["page"]="complete"; st.experimental_rerun()
+                st.session_state["page"]="complete"; st.rerun()
 
 # =============================================================
 # PAGE 3: LEARNING COMPLETE
@@ -1261,7 +1261,7 @@ def page_complete():
     if st.button(tc("Start Assessment →","← ابدأ الاختبار"),key="go_assessment"):
         if "assess_scenario_order" in st.session_state: del st.session_state["assess_scenario_order"]
         st.session_state.update({"page":"assessment","assess_index":0,"assess_emails":{},"assess_answers":{}})
-        st.experimental_rerun()
+        st.rerun()
 
 
 # ══════════════════════════════════════════════════════════
@@ -1459,7 +1459,7 @@ def page_assessment():
     if idx not in st.session_state["assess_emails"]:
         with st.spinner(ta("🤖 Generating scenario...","🤖 جارٍ توليد السيناريو...")):
             st.session_state["assess_emails"][idx]=generate_assess_email(st.session_state["role"],idx,pattern[idx],st.session_state["language"])
-            st.experimental_rerun()
+            st.rerun()
 
     email=st.session_state["assess_emails"].get(idx,{})
     answered_count = len(st.session_state.get("assess_answers", {}))
@@ -1482,7 +1482,7 @@ def page_assessment():
     if "error" in email:
         st.error(f"Error: {email['error']}")
         if st.button(ta("🔄 Try Again","🔄 حاول مرة أخرى"),key="assess_retry"):
-            del st.session_state["assess_emails"][idx]; st.experimental_rerun()
+            del st.session_state["assess_emails"][idx]; st.rerun()
         return
 
     if is_arabic: col_action,col_email=st.columns([1,1.2],gap="large")
@@ -1499,10 +1499,10 @@ def page_assessment():
             c1,c2=st.columns(2)
             with c1:
                 if st.button(f"🚨 {ta('Phishing','تصيد إلكتروني')}",key=f"ph_{idx}"):
-                    st.session_state["assess_answers"][idx]="phishing"; st.experimental_rerun()
+                    st.session_state["assess_answers"][idx]="phishing"; st.rerun()
             with c2:
                 if st.button(f"✅ {ta('Legitimate','شرعية')}",key=f"lg_{idx}"):
-                    st.session_state["assess_answers"][idx]="legitimate"; st.experimental_rerun()
+                    st.session_state["assess_answers"][idx]="legitimate"; st.rerun()
         else:
             ua=st.session_state["assess_answers"][idx]; ca2="phishing" if pattern[idx] else "legitimate"; ok=ua==ca2
             c="#6EE7B7" if ok else "#FCA5A5"; bg="rgba(16,185,129,.15)" if ok else "rgba(239,68,68,.15)"; br="rgba(16,185,129,.5)" if ok else "rgba(239,68,68,.5)"
@@ -1510,10 +1510,10 @@ def page_assessment():
             st.markdown(f'<div style="background:{bg};border:2px solid {br};border-radius:12px;padding:1rem;text-align:center;color:{c};font-weight:800;font-size:1.1rem;margin-bottom:1rem;">{ic} {lb}</div>',unsafe_allow_html=True)
             if idx<TOTAL-1:
                 if st.button(ta("Next Question →","← السؤال التالي"),key=f"na_{idx}"):
-                    st.session_state["assess_index"]+=1; st.experimental_rerun()
+                    st.session_state["assess_index"]+=1; st.rerun()
             else:
                 if st.button(ta("View Results →","← عرض النتائج"),key="vr"):
-                    st.session_state["page"]="results"; st.experimental_rerun()
+                    st.session_state["page"]="results"; st.rerun()
 
 
 # =============================================================
@@ -1547,7 +1547,7 @@ def page_results():
         st.markdown(f'<div style="border:1px solid {bc2};border-radius:14px;padding:1.2rem 1.5rem;background:{bg2};margin-bottom:1rem;direction:{da};"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem;"><span style="font-weight:800;color:#E2E8F0;">{ri} {tr(f"Q{i+1}",f"س{i+1}")} — {html_lib.escape(em.get("subject",""))}</span><span style="background:{"rgba(239,68,68,.2)" if pattern[i] else "rgba(16,185,129,.2)"};color:{"#FCA5A5" if pattern[i] else "#6EE7B7"};padding:.2rem .8rem;border-radius:99px;font-size:.85rem;font-weight:700;">{ic} {tl}</span></div><div style="color:#94A3B8;font-size:.9rem;line-height:1.6;">{exp}</div></div>',unsafe_allow_html=True)
     st.markdown('<div style="height:1rem"></div>',unsafe_allow_html=True)
     if st.button(tr("Go to Report →","← الانتقال للتقرير"),key="go_report"):
-        st.session_state["page"]="report"; st.experimental_rerun()
+        st.session_state["page"]="report"; st.rerun()
 
 # =============================================================
 # PAGE 6: PERFORMANCE REPORT
@@ -1616,7 +1616,7 @@ def page_report():
     if st.button(tp("Retake Training","إعادة التدريب من البداية"),key="retake"):
         for k in ["page","example_index","emails","assess_index","assess_emails","assess_answers","assess_pattern","cache_version","role","scenario_order","assess_scenario_order","difficulty","user_name","user_email","lang_explicitly_chosen","diff_explicitly_chosen"]:
             st.session_state.pop(k,None)
-        st.experimental_rerun()
+        st.rerun()
 
 # =============================================================
 # PAGE 0: LOGIN
@@ -1709,7 +1709,7 @@ div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] button {
     with c1:
         if st.button(tl("← Back","→ رجوع"), key="login_back", use_container_width=True):
             st.session_state["page"] = "home"
-            st.experimental_rerun()
+            st.rerun()
     with c2:
         if st.button(tl("Continue","متابعة"), key="login_continue", use_container_width=True):
             email_pattern = re.compile(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$')
@@ -1724,7 +1724,7 @@ div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] button {
                 st.session_state["user_name"]  = user_name.strip()
                 st.session_state["user_email"] = user_email.strip()
                 st.session_state["page"] = "home"
-                st.experimental_rerun()
+                st.rerun()
 
 # ── ROUTER ─────────────────────────────────────────────────
 pg=st.session_state.get("page","home")
