@@ -1097,7 +1097,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
                 is_sel  = current_diff == dk
                 css_cls = "diff-btn diff-btn-sel" if is_sel else "diff-btn"
                 st.markdown(f'<div class="{css_cls}">', unsafe_allow_html=True)
-                if st.button(lbl, key=f"diff_{dk}"):
+                if st.button(lbl, key=f"diff_{dk}", use_container_width=True):
                     st.session_state["difficulty"] = dk
                     st.session_state["diff_explicitly_chosen"] = True
                     st.rerun()
