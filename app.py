@@ -1068,7 +1068,7 @@ div[data-baseweb="select"] span{{color:white !important;}}
     </div>
   </div>
   <div style="border-top:1px solid rgba(37,99,235,.2);padding-top:12px;">
-    <div style="font-size:.75rem;font-weight:800;color:#7DD3FC;letter-spacing:.05em;margin-bottom:8px;">{diff_title}</div>
+    <div style="font-size:.75rem;font-weight:800;color:#7DD3FC;letter-spacing:.05em;margin-bottom:8px;direction:{dir_attr};text-align:{text_align};">{diff_title}</div>
     <div style="display:flex;flex-direction:column;gap:5px;direction:{dir_attr};text-align:{text_align};">
       <div style="font-size:.8rem;color:#94A3B8;">🟢 {beg_lbl}</div>
       <div style="font-size:.8rem;color:#94A3B8;">🟡 {mid_lbl}</div>
