@@ -1220,7 +1220,7 @@ def page_learning():
 
     st.markdown(f"""
 <div style="margin-bottom:1.5rem;direction:{dir_attr};">
-  <div style="font-size:2.2rem;font-weight:900;color:#F8FAFC;margin-bottom:.4rem;">
+  <div style="font-size:2.2rem;font-weight:900;color:#F8FAFC;margin-bottom:.4rem;text-align:{text_align};">
     {t("AI Tutor-Guided Learning Phase","مرحلة التعلم بتوجيه الذكاء الاصطناعي")}
   </div>
   <div style="width:100%;height:6px;background:rgba(37,99,235,.25);border-radius:99px;margin:.8rem 0;">
