@@ -35,33 +35,21 @@ st.set_page_config(
 )
 
 
-# == Global button CSS fix for newer Streamlit versions ==
+# == Global CSS fixes for Streamlit Cloud ==
 st.markdown("""<style>
-/* Fix button sizing for Streamlit >= 1.28 */
-button[data-testid="baseButton-secondary"],
-button[data-testid="baseButton-primary"],
-.stButton button {
+/* FIX 1: Force all buttons to full width */
+div[data-testid="stButton"] { width: 100% !important; }
+div[data-testid="stButton"] > button {
     width: 100% !important;
     min-height: 52px !important;
+    font-size: 1rem !important;
     font-weight: 800 !important;
     border-radius: 12px !important;
-    font-size: 1rem !important;
     padding: .6rem 1rem !important;
 }
+/* FIX 2: Remove ! from success/error icons */
+div[data-testid="stAlert"] { display: none !important; }
 </style>""", unsafe_allow_html=True)
-
-# == Global CSS fix for button width on newer Streamlit ==
-import streamlit as _st_css
-def _inject_global_css():
-    _st_css.markdown("""<style>
-/* Target every possible Streamlit button wrapper in newer versions */
-div[data-testid="stButton"] { width: 100% !important; }
-div[data-testid="stButton"] > button { width: 100% !important; min-height: 52px !important; }
-div[data-testid="column"] div[data-testid="stButton"] > button { width: 100% !important; }
-.stButton { width: 100% !important; }
-.stButton > button { width: 100% !important; min-height: 52px !important; }
-</style>""", unsafe_allow_html=True)
-_inject_global_css()
 
 # == Session state initialisation ==============================
 # Streamlit reruns the full script on every user interaction.
@@ -909,7 +897,7 @@ def page_home():
 .form-title{{font-size:1.35rem;font-weight:900;color:white;margin-bottom:1rem;}}
 .section-label{{font-weight:800;color:white;margin-bottom:.5rem;direction:{dir_attr};text-align:{text_align};}}
 [data-testid="column"]{{direction:{dir_attr};}}
-.stButton>button{{width:100% !important;min-height:52px !important;background:rgba(15,23,42,.78) !important;color:#EAF4FF !important;border:1px solid rgba(37,99,235,.55) !important;border-radius:12px !important;font-weight:800 !important;direction:{dir_attr} !important;padding:.6rem 1rem !important;font-size:1rem !important;}}
+.stButton>button{{width:100%;min-height:48px;background:rgba(15,23,42,.78);color:#EAF4FF;border:1px solid rgba(37,99,235,.55);border-radius:12px;font-weight:800;direction:{dir_attr};}}
 .stButton>button:hover,.stButton>button:focus{{background:linear-gradient(90deg,#0B4FA8,#0284C7);color:white;border-color:#1EA7FF !important;}}
 .start-btn>button{{min-height:56px !important;background:rgba(15,23,42,.88) !important;color:white !important;border:1px solid rgba(37,99,235,.65) !important;font-size:1.05rem !important;font-weight:900 !important;border-radius:14px !important;}}
 .start-btn>button:hover{{background:linear-gradient(90deg,#0B4FA8,#0284C7) !important;border-color:#1EA7FF !important;}}
@@ -1627,9 +1615,9 @@ def page_report():
                 f'<div style="color:#7DD3FC;font-size:.95rem;">{tp(f"Role: {role}","الدور: "+role)}</div></div>',
                 unsafe_allow_html=True)
     c1,c2,c3=st.columns(3)
-    with c1: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Overall Score","النتيجة الإجمالية")}</div><div style="font-size:2.5rem;font-weight:900;color:{sc2};">{score}/{TOTAL}</div><div style="color:{sc2};font-size:.9rem;">{pct}%</div></div>',unsafe_allow_html=True)
-    with c2: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Awareness Level","مستوى الوعي")}</div><div style="font-size:2.5rem;">{aw}</div><div style="color:{sc2};font-weight:700;font-size:.95rem;">{awl}</div></div>',unsafe_allow_html=True)
-    with c3: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Detection Rate","معدل الاكتشاف الصحيح")}</div><div style="font-size:.8rem;color:#64748B;margin-bottom:.6rem;">{tp("How accurately you identified each type","دقة تمييزك لكل نوع")}</div><div style="font-size:1.1rem;font-weight:700;color:#FCA5A5;">🚨 {tp("Phishing detected","التصيد المكتشف")}: {pp}%</div><div style="font-size:1.1rem;font-weight:700;color:#6EE7B7;margin-top:.4rem;">✅ {tp("Legitimate identified","الشرعية المميزة")}: {lp}%</div></div>',unsafe_allow_html=True)
+    with c1: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Overall Score","النتيجة الإجمالية")}</div><div style="font-size:2.5rem;font-weight:900;color:{sc2};">{score}/{TOTAL}</div><div style="color:{sc2};font-size:.9rem;">{pct}%</div></div>',unsafe_allow_html=True)
+    with c2: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Awareness Level","مستوى الوعي")}</div><div style="font-size:2.5rem;">{aw}</div><div style="color:{sc2};font-weight:700;font-size:.95rem;">{awl}</div></div>',unsafe_allow_html=True)
+    with c3: st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:16px;padding:1.5rem;text-align:center;background:rgba(2,6,23,.6);direction:{da};min-height:180px;display:flex;flex-direction:column;justify-content:center;"><div style="color:#94A3B8;font-size:.85rem;margin-bottom:.4rem;">{tp("Detection Rate","معدل الاكتشاف الصحيح")}</div><div style="font-size:.8rem;color:#64748B;margin-bottom:.6rem;">{tp("How accurately you identified each type","دقة تمييزك لكل نوع")}</div><div style="font-size:1.1rem;font-weight:700;color:#FCA5A5;">🚨 {tp("Phishing detected","التصيد المكتشف")}: {pp}%</div><div style="font-size:1.1rem;font-weight:700;color:#6EE7B7;margin-top:.4rem;">✅ {tp("Legitimate identified","الشرعية المميزة")}: {lp}%</div></div>',unsafe_allow_html=True)
     st.markdown('<div style="height:1rem"></div>',unsafe_allow_html=True)
     s1,s2=st.columns(2)
     with s1:
@@ -1639,7 +1627,7 @@ def page_report():
         ai="".join([f'<div style="color:#FCA5A5;margin-bottom:.4rem;">⚠️ {a}</div>' for a in areas]) or f'<div style="color:#94A3B8;">{tp("Great work!","عمل رائع!")}</div>'
         st.markdown(f'<div style="border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:1.2rem;background:rgba(239,68,68,.05);direction:{da};"><div style="font-weight:800;color:#F1F5F9;margin-bottom:.8rem;">📈 {tp("Areas to Improve","مجالات التحسين")}</div>{ai}</div>',unsafe_allow_html=True)
     st.markdown('<div style="height:1rem"></div>',unsafe_allow_html=True)
-    ri="".join([f'<div style="color:#DCEBFF;margin-bottom:.5rem;">📌 {r}</div>' for r in recs])
+    ri="".join([f'<div style="color:#DCEBFF;margin-bottom:.5rem;text-align:{"right" if is_arabic else "left"};direction:{da};">📌 {r}</div>' for r in recs])
     st.markdown(f'<div style="border:1px solid rgba(37,99,235,.45);border-radius:14px;padding:1.2rem 1.5rem;background:rgba(2,6,23,.6);margin-bottom:1.5rem;direction:{da};"><div style="font-weight:800;color:#F1F5F9;margin-bottom:.8rem;">💡 {tp("Recommendations","التوصيات")}</div>{ri}</div>',unsafe_allow_html=True)
     st.markdown(f'<div style="text-align:center;padding:.8rem;border:1px solid rgba(37,99,235,.3);border-radius:10px;background:rgba(37,99,235,.08);color:#7DD3FC;margin-bottom:1.5rem;">⭐ {tp("Your awareness helps keep your organization safe","وعيك يساهم في حماية مؤسستك")}</div>',unsafe_allow_html=True)
     if st.button(tp("Retake Training","إعادة التدريب من البداية"),key="retake"):
