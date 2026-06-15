@@ -1679,7 +1679,7 @@ def page_login():
     border:1px solid rgba(37,99,235,.55) !important;border-radius:12px !important;
     min-height:48px;direction:{da};font-size:.95rem !important;
 }}
-.stTextInput label{{color:#94A3B8 !important;font-size:.85rem !important;direction:{da};text-align:{text_align};display:block;}}
+.stTextInput label{{color:#94A3B8 !important;font-size:.85rem !important;}}
 .stButton>button {{
     width:100% !important;
     min-height:48px !important;
@@ -1713,6 +1713,12 @@ div[data-testid="stHorizontalBlock"] > div:last-child .stButton>button {{
   <div style="font-size:1.4rem;font-weight:900;color:#F8FAFC;margin-bottom:.4rem;">{page_title}</div>
   <div style="font-size:.9rem;color:#94A3B8;">{page_sub}</div>
 </div>""", unsafe_allow_html=True)
+
+    if is_arabic:
+        st.markdown(f'''<style>
+.stTextInput label{{direction:rtl;text-align:right;display:block;}}
+.stTextInput input{{text-align:right;direction:rtl;}}
+</style>''', unsafe_allow_html=True)
 
     user_name  = st.text_input(
         tl("Full name","الاسم الكامل"),
