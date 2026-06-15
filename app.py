@@ -644,29 +644,19 @@ def call_groq(prompt, max_tokens=1600):
     return resp.json()
 
 def parse_json_response(raw):
+    # Parses the LLM text response into a Python dictionary.
+    # Handles two common LLM formatting issues:
+    #   1. Markdown code fences: ```json ... ``` wrapping
+    #   2. Literal newlines inside JSON string values
+    # Strips control characters then uses fix_json_newlines()
+    # before calling json.loads().
     if "```" in raw:
         raw = raw.split("```")[1]
         if raw.startswith("json"):
             raw = raw[4:]
     raw = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', raw.strip())
     raw = fix_json_newlines(raw)
-    # Try direct parse
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        pass
-    # Try to extract key-value pairs via regex as fallback
-    result = {}
-    for m in re.finditer(r'"(\w+)"\s*:\s*"((?:[^"\\]|\\.)*)"', raw):
-        result[m.group(1)] = m.group(2)
-    for m in re.finditer(r'"(\w+)"\s*:\s*(\[.*?\])', raw, re.DOTALL):
-        try:
-            result[m.group(1)] = json.loads(m.group(2))
-        except Exception:
-            pass
-    if result:
-        return result
-    raise json.JSONDecodeError("Could not parse JSON", raw, 0)
+    return json.loads(raw)
 
 def clean_result(result, is_arabic):
     for f in ["body","suspicious_text","why_risky","learning_tip","subject","email_type"]:
