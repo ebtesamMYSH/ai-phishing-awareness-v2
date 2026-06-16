@@ -1753,7 +1753,7 @@ div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] button {
 
     c1, c2 = st.columns([1,1])
     with c1:
-        if st.button(tl("← Back","←رجوع"), key="login_back", use_container_width=True):
+        if st.button(tl("← Back","← رجوع"), key="login_back", use_container_width=True):
             st.session_state["page"] = "home"
             st.rerun()
     with c2:
